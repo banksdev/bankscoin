@@ -1,6 +1,6 @@
 import express from 'express';
-import { Chain } from './src/chain';
-import { Wallet } from './src/wallet';
+import { Chain } from './chain';
+import { Wallet } from './wallet';
 
 const app = express();
 app.use(express.urlencoded({extended: true}));

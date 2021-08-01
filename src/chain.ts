@@ -7,7 +7,7 @@ class Chain {
 
     chain: Block[];
 
-    constructor() {
+    private constructor() {
         this.chain = [new Block('', new Transaction(100, 'genesis', 'banks'))]
     }
 
@@ -27,14 +27,14 @@ class Chain {
 
             if (attempt.substr(0,4) === '0000') {
                 console.log(`Solved in ${solution} tries: ${attempt}`)
-                return solution;
+                return attempt;
             }
 
             solution += 1;
         }
     }
 
-    addblock(transaction: Transaction, senderPublicKey: string, signature: Buffer) {
+    addBlock(transaction: Transaction, senderPublicKey: string, signature: Buffer) {
         const verifier = crypto.createVerify('SHA256');
         verifier.update(transaction.toString());
 
@@ -44,7 +44,10 @@ class Chain {
             const newBlock = new Block(this.lastBlock.hash, transaction);
             this.mine(newBlock.nonce);
             this.chain.push(newBlock);
+            return newBlock;
         }
+
+        return null;
     }
 }
 

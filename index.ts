@@ -7,7 +7,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to Banks\' Blockchain</h1> <ul><li>/createWallet</li><li>/chain</li><li>/sendMoney</li></ul>');
+    res.send('<h1>Welcome to Banks\' Blockchain</h1> <h3>commands:</h3> <ul><li>/createWallet</li><li>/chain</li><li>/sendMoney</li></ul>');
 })
 
 app.get('/createWallet', (req, res) => {
@@ -25,8 +25,8 @@ app.post('/sendMoney', (req,res) => {
     const payerPrivateKey = req.body.payerPrivateKey;
     const payeePublicKey = req.body.payeePublicKey;
     
-    const transaction = Wallet.sendMoney(amount, payerPublicKey, payerPrivateKey, payeePublicKey);    
-    res.send(transaction);
+    const blockHash = Wallet.sendMoney(amount, payerPublicKey, payerPrivateKey, payeePublicKey);    
+    res.send(blockHash);
 });
 
 app.listen(3000, () => {

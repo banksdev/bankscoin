@@ -17,24 +17,23 @@ class Wallet {
         this.privateKey = keypair.privateKey;
     }
 
-    sendMoney(amount: number, payeePublicKey: string) {
+    sendMoney(amount: number, payeePublicKey: string) : string | undefined {
         const transaction = new Transaction(amount, this.publicKey, payeePublicKey);
         const sign =    crypto.createSign('SHA256');
         sign.update(transaction.toString()).end()
 
         const signature = sign.sign(this.privateKey);
-        Chain.instance.addblock(transaction, this.publicKey, signature);
+        const block = Chain.instance.addBlock(transaction, this.publicKey, signature);
+        return block?.hash;
     }
 
-    static sendMoney(amount: number, payerPublicKey: string, payerPrivateKey: string, payeePublicKey: string) : Transaction {
+    static sendMoney(amount: number, payerPublicKey: string, payerPrivateKey: string, payeePublicKey: string) : string | undefined {
         const transaction = new Transaction(amount, payerPublicKey, payeePublicKey);
         const sign =    crypto.createSign('SHA256');
-        sign.update(transaction.toString()).end()
-
-        console.log(payerPrivateKey);
+        sign.update(transaction.toString()).end();
         const signature = sign.sign(payerPrivateKey);
-        Chain.instance.addblock(transaction, payerPublicKey, signature);
-        return transaction;
+        const block = Chain.instance.addBlock(transaction, payerPublicKey, signature);
+        return block?.hash;
     }
 
 }
